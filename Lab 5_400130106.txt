@@ -1,0 +1,127 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package testmaxheap;
+import java.util.Arrays;
+
+/**
+ *
+ * @author kamre
+ */
+public class MaxHeap {
+   
+    private int size;
+    private int heapSize;
+    private Integer[] newHeap;
+    
+    
+    public MaxHeap (int n){ 
+        size = n;
+        heapSize = 0;
+        newHeap = new Integer[n]; 
+    }
+    
+    
+    public MaxHeap(Integer[] someArray){
+        size = someArray.length;
+        heapSize = 0;
+        newHeap = new Integer[size];
+        for (int i=0; i<someArray.length; i++){
+            insert(someArray[i]);
+        }
+    }
+    
+    public void insert(int n){ 
+        int temp = heapSize;
+        int parent = (int)Math.floor((temp-1)/2);
+        if (size == heapSize){ 
+            Integer[] heap1 = new Integer[size*2];
+            for (int i = 0; i< size; i++){ 
+                heap1[i] = this.newHeap[i];
+            }  
+            this.newHeap = heap1;
+            size = size*2;
+        }
+       
+        while (temp>0 && n > newHeap[parent]){ 
+            newHeap[temp] = newHeap[parent];
+            temp = parent;
+            parent = (int)Math.floor((temp-1)/2);
+            
+        }
+        newHeap[temp] = n;
+        heapSize++;
+    }
+    
+    public int deleteMax(){ 
+        
+        int temp = 0;
+        int largest = newHeap[temp];
+        int left,right, n;
+        boolean bool = false;
+        newHeap[temp] = newHeap[heapSize-1];
+        heapSize--;
+        
+        do { 
+            n = temp;
+            left = 2*temp;
+            right = 2*temp+1;
+            
+            boolean l = (left < heapSize);
+            boolean r = (right < heapSize);
+            
+            if (l && newHeap[temp] < newHeap[right]){
+                n = left;
+                
+            } 
+            if (r && newHeap[n] < newHeap[right]){ 
+                n = right;
+            }
+            if (n != temp){ 
+                int check = newHeap[temp];
+                newHeap[temp] = newHeap[n];
+                newHeap[n] = check;
+                temp = n;
+                bool = true;
+            }
+            else{ 
+                bool = false;
+            }        
+        } while (bool);
+        System.out.print(largest+ " ");
+        return largest;
+    }
+    
+   
+ 
+    
+    public String toString(){ 
+        return Arrays.toString(newHeap);
+    }
+    
+    public static void heapSort(Integer[] arrayToSort){ 
+        
+        int x = arrayToSort.length -1;
+        MaxHeap tempHeap = new MaxHeap(arrayToSort);
+        for (int i = x; i>= 0; i--){ 
+            arrayToSort[i] = tempHeap.deleteMax();
+        }
+    }
+    
+           
+          
+    public int getSize(){ 
+        return size;
+    }
+    
+    public Integer[] getheap(){ 
+        return newHeap;
+    }
+    
+    public int getHeapSize(){ 
+        return heapSize;
+    }
+    
+}

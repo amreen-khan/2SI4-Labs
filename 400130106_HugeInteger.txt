@@ -1,0 +1,209 @@
+package si4lab1;
+
+/**
+ *
+ * @author kamre
+ */
+public class SI4Lab1 {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        
+        HugeInteger test = new HugeInteger ("49999");
+        
+        HugeInteger test2 = new HugeInteger ("-10099");
+        
+        test.add(test2);
+        
+        test.subtract(test2);
+        
+    }
+    
+}
+
+
+
+
+
+package si4lab1;
+import java.util.Random;
+import java.util.Arrays;
+
+/**
+ *
+ * @author kamre
+ */
+public class HugeInteger {
+    
+    public int[] arr1;
+
+    public HugeInteger(String val) throws IllegalArgumentException { 
+        
+        if (val.charAt(0) == 45) { 
+            arr1 = new int[val.length()];
+            arr1[0] = 1; 
+            
+            for (int i = 1; i < val.length(); i++) { 
+                if (Character.isDigit(val.charAt(i))) { 
+                    arr1[i] = Character.getNumericValue(val.charAt(i));
+                }
+                else { 
+                    throw new IllegalArgumentException("Entered string must be all integer values");
+                }
+            }
+        }
+        else { 
+            arr1 = new int[val.length() + 1]; 
+            arr1[0] = 0; 
+            for (int i = 0; i < val.length(); i++){ 
+                if (Character.isDigit(val.charAt(i))) { 
+                    arr1[i + 1] = Character.getNumericValue(val.charAt(i));
+                }
+                else { 
+                    throw new IllegalArgumentException("Entered string must be all integer values");
+                }
+            }
+        }
+        
+    }
+    
+    public HugeInteger(int n) throws IllegalArgumentException { 
+        
+        Random randomNum = new Random();
+        
+        if (n < 0){ 
+            throw new IllegalArgumentException("Size of integer must be >= 1");
+        }
+        
+        boolean numSign = randomNum.nextBoolean();
+        
+        int determinant = -1; 
+        
+        if (numSign) { 
+            determinant = -1; 
+        }
+        
+        arr1 = new int[n];
+        
+        int num1 = randomNum.nextInt(9);
+        
+        do { 
+            num1 = randomNum.nextInt(9);
+        }while (num1 == 0);
+        
+        arr1[0] = determinant * num1;
+        
+        for (int i = 0; i < n; i++) {
+            arr1[i] = randomNum.nextInt(9);
+        }
+                
+    }
+    
+    
+    public HugeInteger add(HugeInteger h) { 
+        
+        int carry = 0;
+        
+        int lenh = h.arr1.length;
+        
+        int lenHugeInt = this.arr1.length; 
+        
+        int sum[] = new int[lenh];
+        
+        //for (int num : this.arr1) System.out.print(num); 
+        
+        if (this.arr1[0] >= 0 && h.arr1[0] >= 0){ 
+            
+            for (int i=lenh-1; i >= 0; i--){ 
+                sum[i] = h.arr1[i] + this.arr1[i] + carry;
+                //System.out.println(sum[i]);
+                if (sum[i] > 9){
+                    carry = 1;
+                    sum[i] -= 10; 
+                }
+                else { 
+                    carry = 0; 
+                }
+            }
+            
+        }
+        
+        else if (this.arr1[0] >= 0 && h.arr1[0] < 0) { 
+        
+            for (int i=lenh-1; i >= 0; i--){ 
+                sum[i] = h.arr1[i] - this.arr1[i];
+                //System.out.println(sum[i]);
+
+            }
+        }
+        
+        
+//        if (lenh != lenHugeInt){ 
+//            
+//            // if they are not of equal length the shorter number will have 0's added to the front
+//            
+//        }
+//        else { 
+//            for (int i=lenh-1; i >= 0; i--){ 
+//                sum[i] = h.arr1[i] + this.arr1[i] + carry;
+//                //System.out.println(sum[i]);
+//                if (sum[i] > 9){
+//                    carry = 1;
+//                    sum[i] -= 10; 
+//                }
+//                else { 
+//                    carry = 0; 
+//                }
+//            }
+//        }
+        
+        System.out.println (Arrays.toString(sum));
+
+        return null; 
+
+    }
+    
+   
+    public HugeInteger subtract(HugeInteger h){ 
+        
+        int carry = 0;
+        
+        int lenh = h.arr1.length;
+        
+        int lenHugeInt = this.arr1.length; 
+        
+        int difference[] = new int[lenh];
+        
+        if (lenh != lenHugeInt){ 
+            
+            // if they are not of equal length the shorter number will have 0's added to the front
+            
+        }
+        else { 
+            
+            for (int i=lenh-1; i >= 0; i--){ 
+                if (this.arr1[i] < h.arr1[i]){ 
+                    
+                    this.arr1[i] += 10; 
+                    
+                    difference[i] = this.arr1[i] - h.arr1[i] - carry; 
+                    
+                    carry = 1;
+                    
+                }
+                else { 
+                    
+                    difference[i] = this.arr1[i] - h.arr1[i] - carry;
+                    
+                }
+            }
+        }
+        
+        
+        System.out.println (Arrays.toString(difference));
+        
+        return null;
+    }
+}

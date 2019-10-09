@@ -1,0 +1,615 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hashtable;
+
+/**
+ *
+ * @author kamre
+ */
+public class HashTableLin {
+    
+    private Integer[] table;
+    private int size; 
+    private int keyNum;
+    private final double factor;
+    
+    public HashTableLin(int maxNum, double load) {
+        
+        int num;
+        double tempNum = maxNum/load;
+        int i = -1;
+        
+        if (tempNum % 1 == 0){
+            num = (int) tempNum - 1;
+        }
+        
+        else { 
+            num = (int)(tempNum -1); 
+        }
+        while (i != num){
+            num++;
+            
+            for (i = 2; i < num; i++){
+                if (tempNum % i == 0){ 
+                    break;
+                }
+            }
+        }
+        
+        size = num;
+        table = new Integer[size];
+        factor = load;
+        keyNum = 0;
+    }
+    
+    
+    public void insert(int n){ 
+        
+        if(isIn(n)){
+            return;
+        }
+        
+        int num = n%size;
+        
+        while(true){
+            
+            if (table[num] == null){
+                table[num] = n;
+                break;
+            }
+            else { 
+                num = (num + 1) % size;
+            }
+        }
+        
+        keyNum ++;
+        
+        if (keyNum*1.0 / size>=factor) {
+            rehash();
+        }
+        
+    }
+    
+    private void rehash(){
+        
+        int temp = 2*size-1;
+        int i = -1;
+        
+        while (i != temp){ 
+            
+            temp++;
+            
+            for (i = 2; i < temp; i++){ 
+                if (temp % i == 0){ 
+                    break;
+                }
+            }
+        }
+        
+        Integer[] tempTable = new Integer[temp];
+        int returnSize = temp;
+        int num = 0;
+        Integer n;
+        int count = 0;
+        
+        while (count < keyNum){
+            
+            if(table[num] != null){ 
+                count++;
+                n = table[num];
+                int temp2 = n % returnSize;
+                
+                while (true) { 
+                    
+                    if (tempTable[temp2] == null) { 
+                        tempTable[temp2] = n;
+                        break;
+                    }
+                    
+                    else { 
+                        temp2 = (temp2 + 1)%returnSize;
+                    }
+                }
+            }
+            
+            num++;
+            
+        }
+        
+        size = returnSize;
+        table = tempTable;
+        
+    }
+    
+    public boolean isIn(int n){
+        
+        int temp = n%size;
+        
+        if ((table[temp] != null) && (table[temp] == n)){ 
+            return true;
+        }
+        int add = (temp + 1)%size;
+        
+        while (add != temp) { 
+            
+            if ((table[add] != null) && (table[add] == n)){ 
+                return true;
+            }
+            
+            if (table[add] == null){ 
+                break;
+            }
+            
+            else { 
+                add = (add + 1)%size;
+            }
+        }
+        
+        return false;
+        
+    }
+    
+    public void printKeysAndIndexes(){
+        
+        int add = 0;
+        
+        for (int i = 0; i<size; i++){
+            
+            if (table[i] != null) { 
+                System.out.println(i+"   "+table[i]);
+                add++;
+            }
+            
+            if (add == keyNum){
+                break;
+            }
+        }
+        
+        
+    }
+    
+    public void keys(){ 
+        
+        int add = 0;
+        
+        for (int i=0; i<size; i++){ 
+            System.out.println(table[i]);
+            add++;
+        }
+        
+        if (add == keyNum){ 
+            return;
+        }
+    }
+    
+    public int getNumKey(){
+	return keyNum;
+    }
+    
+    public int getSize(){
+        return size;
+    }
+
+    public double getMaxLoad(){
+	return factor;
+    }
+    
+    public int insertCount(int n) { 
+        
+        int probe= 0;
+        
+        if(isIn(n) == false){ 
+            
+            //if (keyNum + 1 > maxKey) { 
+                
+                rehash();
+                int temp = n%size;
+                if (table[temp] != null){ 
+                    
+                    int a = 1; 
+                    int i = ((a + temp) != size)?a+temp:0;
+                    int count = 1;
+                    
+                    while(table[i] != null){
+                        
+                        count++; 
+                        a = count*count; 
+                        i = a + temp;
+                        probe++;
+                        
+                        if (i >= size){ 
+                            i = i%size;
+                        }
+                    }
+                    
+                    table[i] = n;
+                    keyNum++;
+                    probe++;
+                        
+                }
+                
+                else{ 
+                    table[temp] = n;
+                    keyNum++;
+                    probe++;
+                    
+                }
+                
+        }
+            
+            else
+            {
+                int temp = n%size;
+                
+                if (table[temp] != null){
+                    
+                    int a = 1; 
+                    int i = ((a+temp)!=size)?a+temp:0; 
+                    int count = 1;
+                    
+                    while(table[i] != null){
+                        
+                        count++; 
+                        a = count * count;
+                        i = a+temp;
+                        probe++;
+
+                        if((i) >= size ){
+                            i = i%size;
+                        }
+                    }
+                    table[i] = n; 
+                    keyNum++;
+                    probe++;
+
+                }
+                else{
+                    
+                    table[temp] = n; 
+                    keyNum++;
+                    probe++;
+                    
+                }
+            }
+        
+        return probe;
+    }
+}
+
+
+
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hashtable;
+
+/**
+ *
+ * @author kamre
+ */
+public class HashTableQuad {
+    
+    private Integer[] table;
+    private int size; 
+    private int keyNum;
+    private int maxKey;
+    private final double factor;
+    
+    public HashTableQuad(int maxNum, double load) {
+        
+        int num;
+        double tempNum = maxNum/load;
+        int i = -1;
+        
+        if (tempNum % 1 == 0){
+            num = (int) tempNum - 1;
+        }
+        
+        else { 
+            num = (int)(tempNum -1); 
+        }
+        while (i != num){
+            num++;
+            
+            for (i = 2; i < num; i++){
+                if (tempNum % i == 0){ 
+                    break;
+                }
+            }
+        }
+        
+        size = num;
+        table = new Integer[size];
+        factor = load;
+        keyNum = 0;
+    }
+    
+    
+    public void insert(int n){ 
+        
+        if(isIn(n) == false){ 
+            
+            if (keyNum + 1 > maxKey) { 
+                
+                rehash();
+                int temp = n%size;
+                if (table[temp] != null){ 
+                    
+                    int a = 1; 
+                    int i = ((a + temp) != size)?a+temp:0;
+                    int count = 1;
+                    
+                    while(table[i] != null)
+                    {
+                        count++; 
+                        a = count*count; 
+                        i = a + temp;
+                        
+                        if (i >= size){ 
+                            i = i%size;
+                        }
+                    }
+                    
+                    table[i] = n;
+                    keyNum++;
+                        
+                }
+                
+                else{ 
+                    table[temp] = n;
+                    keyNum++;
+                    
+                }
+                
+        }
+            
+            else
+            {
+                int temp = n%size;
+                
+                if (table[temp] != null){
+                    
+                    int a = 1; 
+                    int i = ((a+temp)!=size)?a+temp:0; 
+                    int count =1;
+                    
+                    while(table[i] != null){
+                        
+                        count++; 
+                        a = count * count;
+                        i = a+temp;
+
+                        if((i) >= size ){
+                            i = i%size;
+                        }
+                    }
+                    table[i] = n; 
+                    keyNum++;
+
+                }
+                else{
+                    
+                    table[temp] = n; 
+                    keyNum++;
+                    
+                }
+            }
+        }
+    }
+    
+    
+    private void rehash(){
+        
+        int temp = 2*size-1;
+        int i = -1;
+        
+        while (i != temp){ 
+            
+            temp++;
+            
+            for (i = 2; i < temp; i++){ 
+                if (temp % i == 0){ 
+                    break;
+                }
+            }
+        }
+        
+        Integer[] tempTable = new Integer[temp];
+        int returnSize = temp;
+        int num = 0;
+        Integer n;
+        int count = 0;
+        
+        while (count < keyNum){
+            
+            if(table[num] != null){ 
+                count++;
+                n = table[num];
+                int temp2 = n % returnSize;
+                
+                while (true) { 
+                    
+                    if (tempTable[temp2] == null) { 
+                        tempTable[temp2] = n;
+                        break;
+                    }
+                    
+                    else { 
+                        temp2 = (temp2 + 1)%returnSize;
+                    }
+                }
+            }
+            
+            num++;
+            
+        }
+        
+        size = returnSize;
+        table = tempTable;
+        
+    }
+    
+    public boolean isIn(int n){
+        
+        int temp = n%size;
+        
+        if ((table[temp] != null) && (table[temp] == n)){ 
+            return true;
+        }
+        int add = (temp + 1)%size;
+        
+        while (add != temp) { 
+            
+            if ((table[add] != null) && (table[add] == n)){ 
+                return true;
+            }
+            
+            if (table[add] == null){ 
+                break;
+            }
+            
+            else { 
+                add = (add + 1)%size;
+            }
+        }
+        
+        return false;
+        
+    }
+    
+    public void printKeysAndIndexes(){
+        
+        int add = 0;
+        
+        for (int i = 0; i<size; i++){
+            
+            if (table[i] != null) { 
+                System.out.println(i+"   "+table[i]);
+                add++;
+            }
+            
+            if (add == keyNum){
+                break;
+            }
+        }
+        
+        
+    }
+    
+    public void keys(){ 
+        
+        int add = 0;
+        
+        for (int i=0; i<size; i++){ 
+            System.out.println(table[i]);
+            add++;
+        }
+        
+        if (add == keyNum){ 
+            return;
+        }
+    }
+    
+    public int getNumKey(){
+	return keyNum;
+    }
+    
+    public int getSize(){
+        return size;
+    }
+
+    public double getMaxLoad(){
+	return factor;
+    }
+    
+    public int insertCount(int n) { 
+        
+        int probe= 0;
+        
+        if(isIn(n) == false){ 
+            
+            if (keyNum + 1 > maxKey) { 
+                
+                rehash();
+                int temp = n%size;
+                if (table[temp] != null){ 
+                    
+                    int a = 1; 
+                    int i = ((a + temp) != size)?a+temp:0;
+                    int count = 1;
+                    
+                    while(table[i] != null){
+                        
+                        count++; 
+                        a = count*count; 
+                        i = a + temp;
+                        probe++;
+                        
+                        if (i >= size){ 
+                            i = i%size;
+                        }
+                    }
+                    
+                    table[i] = n;
+                    keyNum++;
+                    probe++;
+                        
+                }
+                
+                else{ 
+                    table[temp] = n;
+                    keyNum++;
+                    probe++;
+                    
+                }
+                
+        }
+            
+            else
+            {
+                int temp = n%size;
+                
+                if (table[temp] != null){
+                    
+                    int a = 1; 
+                    int i = ((a+temp)!=size)?a+temp:0; 
+                    int count = 1;
+                    
+                    while(table[i] != null){
+                        
+                        count++; 
+                        a = count * count;
+                        i = a+temp;
+                        probe++;
+
+                        if((i) >= size ){
+                            i = i%size;
+                        }
+                    }
+                    table[i] = n; 
+                    keyNum++;
+                    probe++;
+
+                }
+                else{
+                    
+                    table[temp] = n; 
+                    keyNum++;
+                    probe++;
+                    
+                }
+            }
+        }
+        return probe;
+    }
+}
+    
+
+
+

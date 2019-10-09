@@ -1,0 +1,611 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package si4lab3;
+
+/**
+ *
+ * @author kamre
+ */
+public class SI4Lab3 {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+
+        
+     
+        
+        int[] d1 = {7, 0, 16, 3, 2, 11, 8, 9, 4}; //no repetitions
+		int[] d2 = {5, 6, 5, 1, 2, 2, 4, 9, 8, 20, 32, 3, 17};//with repetitions
+		int v1 = 11; //value in set d1
+		int v2 = 10; //value not in set d1
+		int v3 = 0; //another value in set d1
+
+		int[] d3 = {17, 2, 9, 8, 30}; //has elements in common with d1
+		int[] d4 = {6, 1, 10, 12, 5}; //no common elements with d1
+
+		int[] d6 = {2, 4, 6, 8, 11, 10, 14, 15, 18, 24, 22, 35, 28, 29}; //almost sorted array
+		int[] d7 = {1, 3, 6, 10, 11, 22, 28, 35}; // sorted; has elements in common with d6		
+
+		System.out.println("Test1---constructor1" );
+	        BSTSet a0 = new BSTSet();
+                //System.out.println(a0.checkMin(a0.root));
+		a0.printBSTSet();
+		System.out.println("\n");
+				 
+		System.out.println("Test2---constructor2---no repetitions" );
+		BSTSet a1 = new BSTSet(d1);
+		a1.printBSTSet();
+		System.out.println("\n");
+		
+		System.out.println("Test3---constructor2---with repetitions" );
+		BSTSet a2 = new BSTSet(d2);
+		a2.printBSTSet();
+		System.out.println("\n");
+		
+		System.out.println("Test4---isIn(v1)---true" );
+		System.out.println("v1 is in set d1");
+		System.out.println(a1.isIn(v1));
+		System.out.println("\n");
+		
+		System.out.println("Test5---isIn(v2)---false" );
+		System.out.println("v2 is in set d1");
+		System.out.println(a1.isIn(v2));
+		System.out.println("\n");
+		
+		System.out.println("Test6---add(v1)---v1 was in the set; no change" );
+		a1 = new BSTSet(d1);
+		a1.add(v1);
+		a1.printBSTSet();
+		System.out.println("\n");
+		
+		System.out.println("Test7---add(v2)---v2 was not in the set; it is added" );
+		a1 = new BSTSet(d1);
+		a1.add(v2);
+		a1.printBSTSet();
+		System.out.println("\n");			
+		
+		System.out.println("Test9---remove(v2)--v2 was not in the set; no change" );
+		a1 = new BSTSet(d1);
+		System.out.println(a1.remove(v2)); //false
+		a1.printBSTSet();
+		System.out.println("\n");
+		
+		System.out.println("Test10---remove(v1)--v1 was in the set; it is removed" );
+		a1 = new BSTSet(d1);
+		System.out.println(a1.remove(v1)); //true
+		a1.printBSTSet();
+		System.out.println("\n");
+		
+		System.out.println("Test11---remove(v3)--v3 was in the set; it is removed" );
+		a1 = new BSTSet(d1);
+		System.out.println(a1.remove(v3)); //true
+		System.out.println("\n");
+		
+		System.out.println("Test12---union()---sets with common elements" );
+		a1 = new BSTSet(d1);
+		BSTSet a3 = new BSTSet(d3);
+		BSTSet a5 = a1.union(a3); //union of d1 and d3
+		a5.printBSTSet();
+		System.out.println("\n");
+		
+		
+		System.out.println("Test13---union()---sets without common elements" );
+		a1 = new BSTSet(d1);
+		BSTSet a4 = new BSTSet(d4);
+		a5 = a4.union(a1); //union of d1 and d4
+		a5.printBSTSet();
+		System.out.println("\n");
+		
+		System.out.println("Test14---intersection()---sets with common elements" );
+		a1 = new BSTSet(d1);
+		a3 = new BSTSet(d3);
+		a5 = a3.intersection(a1); //intersection of d1 and d3
+		a5.printBSTSet();
+		System.out.println("\n");
+
+		System.out.println("Test15---intersection()---sets with no common elements" );
+                a1 = new BSTSet(d1);
+		a4 = new BSTSet(d4);
+		a5 = a1.intersection(a4); //intersection of d1 and d4; should be empty
+		a5.printBSTSet();
+		System.out.println("\n");
+		
+		
+		System.out.println("Test16---intersection()---with empty set" );
+                a0 = new BSTSet(); //empty set
+		a1 = new BSTSet(d1);
+		a5 = a1.intersection(a0); //intersection of d1 and the empty set; should be empty
+		a5.printBSTSet();
+		System.out.println("\n");
+		
+
+		System.out.println("Test17---difference() -- one way");
+		a0 = new BSTSet(d6);
+		a1 = new BSTSet(d7);
+		a5 = a0.difference(a1); //6, 11, 22, 28 are in common in both sets
+		a5.printBSTSet();
+		System.out.println("\n");
+
+
+		System.out.println("Test18---difference() -- other way");
+		a0 = new BSTSet(d6);
+		a1 = new BSTSet(d7);
+		a5 = a1.difference(a0); //6, 11, 22, 28 are in common in both sets
+		a5.printBSTSet();
+		System.out.println("\n");
+
+
+		System.out.println("Test19---difference() -- empty");
+		a0 = new BSTSet(d6); 
+		a1 = new BSTSet(d6);
+		a5 = a1.difference(a0); 
+		a5.printBSTSet();
+		System.out.println("\n");
+
+
+		System.out.println("Test20---size() + height()" );
+		a1 = new BSTSet(d1);
+		System.out.println("The size of d1 is " + a1.size());
+		System.out.println("The height d1 is " + a1.height()); //height should be minimum for bonus
+		a1 = new BSTSet(d6);
+		System.out.println("The size of d6 is " + a1.size());
+		System.out.println("The height of d6 is " + a1.height()); 
+
+		
+		System.out.println("Test21---size() + height()---empty set" );
+		a0 = new BSTSet(); //empty set
+		System.out.println("The size of the empty set is " + a0.size()); // should be 0
+		System.out.println("The height of the empty set is " + a0.height());//should be -1
+
+		System.out.println("Test22---printNonRec()--elements should be in increasing order" );
+		a1 = new BSTSet(d1);
+		a1.printNonRec(); //set d1
+		a1 = new BSTSet(d6);
+		a1.printNonRec(); //set d6
+
+
+		//Test bonus
+		System.out.println("Test23---bonus" );
+		a1 = new BSTSet(d6);
+		System.out.println("The height of d6 is " + a1.height());
+		a2 = new BSTSet(d7);
+		System.out.println("The height of d7 2 is " + a2.height());
+		a3 = a1.union(a2); 
+		a4 = a1.intersection(a2);
+		System.out.println("Print union:");
+		a3.printBSTSet(); 
+		System.out.println("The height of the union is " + a3.height());
+		System.out.println("Print intersection:");
+		a4.printBSTSet(); 
+		System.out.println("The height of the intersection is " + a4.height());
+        
+        
+        
+    }
+    
+}
+
+
+
+
+
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package si4lab3;
+import java.util.Stack;
+
+/**
+ *
+ * @author kamre
+ */
+public class BSTSet {
+    
+    private TNode root; 
+    
+    public BSTSet() { 
+        
+        root = null; // creating empty set where root = null
+        
+    }
+    
+    public BSTSet(int[] input){ // creating set from an array
+        
+        if (input.length <= 0) { // checking if input length is less than 0
+            return;
+        }
+        this.root = new TNode(input[0], null, null); // not 0 then make 0th element in arr = root
+        // and left and right == null
+        
+        for (int i = 1; i < input.length; i++){  // add rest of array
+            this.add(input[i]);
+            //System.out.println(input[i]);
+        }
+    }
+    
+    
+///////////////////// isIn ///////////////////// 
+    public boolean isIn(int v){ 
+        return isIn (v, this.root); // init private isIn to encapture the node
+    }
+    
+    
+    private boolean isIn (int v, TNode node){
+        
+        boolean bool = false; 
+        
+        if (node == null){ // if node = null returns bool val
+            return bool;
+        }
+        else if (node.element < v){ // checks node one by one 
+            bool = isIn(v, node.right); // if node element is < v moves to right node 
+        }
+        else if (node.element > v){ // node elemetn > v moves to left node 
+            bool = isIn(v, node.left);
+        }
+        else { 
+            return true; // when it finds the value it returns true
+        }
+        return bool; 
+        
+    }
+    
+///////////////////// add ///////////////////// 
+    public void add (int v){ 
+        
+        TNode node = this.root; // init private add
+        this.add(v, node); 
+        
+    }
+    
+
+    private void add (int v, TNode node){ 
+        
+        if (node == null){ // checks if the root is empty 
+            node = new TNode(v, null, null); // if it is empty then put value of root into node
+        }
+        else if (node.element > v){ // if not null then checks if > v
+            if (node.left == null){ // if > then and empty node
+                node.left = new TNode (v, null, null);// then puts on left side of the tree
+                return;
+            }
+            node = node.left;
+            this.add(v,node);
+        }
+        else if (node.element < v){ // if v < root
+           if (node.right == null){ // same thing as above but on right
+                node.right = new TNode (v, null, null);
+                return;
+            }
+            node = node.right;
+            this.add(v, node);
+        }
+    }
+    
+///////////////////// remove /////////////////////
+    public boolean remove(int v){ 
+        
+        TNode node = this.root;
+        
+        if (this.isIn(v) == false){ 
+            return false;
+        }
+        else { 
+            if (node != null){ 
+                this.remove (v, node);
+            }
+            if (this.isIn(v) == false){ 
+                return true;
+            }
+            return false;
+        }
+    }
+    
+    private TNode remove (int v, TNode node){ 
+        
+        if (node.element < v){ 
+            node.right = remove (v, node.right); // then at the one we want removed 
+        }
+        else if (node.element > v){
+            node.left = remove (v, node.left); // if you go left u have to keep chekcing 
+        }
+        else {
+            if (node.right != null && node.left != null){ // if you go right that the one you remove
+                node.element = checkMin(node.right);
+                node.right = removeMin(node.right);
+            }
+            else if(node.left != null){
+                node = node.left;
+            }
+            else {
+              node = node.right;
+            }
+        }
+        return node;
+    }
+    
+    
+    public int checkMin (TNode node) { 
+        
+        node = node.left;
+        System.out.println(node.element);
+        while (node.left != null){ // find smallest one along left
+            node = node.left; // trying to find the one we removed 
+        }
+        return node.element;
+        
+    }
+    
+    private TNode removeMin (TNode node) { 
+        
+        if (node != null){
+            node.left = removeMin(node.left); // actually removing the value
+            return node;
+        }
+        else {
+            return node.right;
+        } 
+    }
+    
+    
+    
+///////////////////// union ///////////////////// 
+    public BSTSet union(BSTSet s){ 
+        
+        int[] arr = new int[this.size() + s.size()]; 
+        
+        TNode temp = s.root;
+        
+        int i = 0;
+        
+        if (temp != null){
+            arr[i] = temp.element;
+            i++;
+            
+            //System.out.println(S.left.element);
+            while (temp.left != null){
+                temp = temp.left;
+                arr[i] = temp.element;
+                i++;
+            }
+            
+            while (temp.right!= null){
+                temp = temp.right;
+                arr[i] = temp.element;
+                i++;
+            }
+        }
+        
+        TNode node = this.root;
+        
+        if (node != null){
+            arr[i] = node.element;
+            i++;
+            
+            while (node.left != null){
+                node =node.left;
+                arr[i] = node.element;
+                i++;
+            }
+            
+            while (node.right != null){
+                node = node.right;
+                arr[i] = node.element;
+                i++;
+            }
+        }
+        BSTSet set = new BSTSet (arr);
+        return set;
+        
+    }
+    
+    
+    
+///////////////////// intersection ///////////////////// 
+    public BSTSet intersection(BSTSet s){  // same as union but only prints values in both arrays 
+        
+        int i = 0;
+        
+        int[] arr = new int [s.size() + this.size()];
+       
+        TNode temp = s.root;
+        
+        if (temp != null && this.isIn(temp.element)){
+            arr[i] = temp.element;
+            i++;
+        }
+        if (temp != null){
+            while (temp.left != null){
+                temp = temp.left;
+                if (this.isIn(temp.element)){
+                    arr [i] = temp.element;
+                    i++;
+                }
+            }
+            while (temp.right != null){
+                temp = temp.right;
+                if (this.isIn(temp.element)){
+                    arr[i] = temp.element;
+                    i++;
+                }
+            }
+        }
+        BSTSet set = new BSTSet(arr);
+        return set; 
+    }
+    
+    
+///////////////////// difference ///////////////////// 
+    public BSTSet difference(BSTSet s){ 
+        BSTSet set = new BSTSet();
+        this.difference(s.root, set);
+        return set;
+    }
+    
+    private BSTSet difference (TNode t, BSTSet s){ 
+        if (t != null) { 
+            difference(t.left, s);
+            if (this.isIn(t.element) == false) {
+                s.add(t.element);
+                //System.out.println(t.element);
+            }
+            difference(t.right, s);
+        }
+        //s.printBSTSet();
+        return s;
+    }
+    
+    
+///////////////////// size ///////////////////// 
+    public int size(){ 
+        
+        return size(this.root);
+        
+    }
+    
+    private int size(TNode t){ 
+        if (t != null){
+            int size;
+            size = size(t.left) + size(t.right) + 1; // accounting for entire tree as well as null element
+            return size;
+        }
+        return 0;
+    }
+    
+    
+///////////////////// height ///////////////////// 
+    public int height(){ 
+        
+        TNode node = this.root;
+        if (this.root == null){
+            return -1;
+        }
+        else {
+            int i = 0;
+            int j = 0;
+            
+            i = i + height(node.left);
+            j = j + height(node.right);
+            
+            if (i >= j){
+                return i;
+            }
+            else {
+                return j;
+
+            }
+        }
+    }
+    
+    private int height (TNode node){ 
+        
+        int i = 0; 
+        int j = 0;
+        
+        if(node != null) {
+            i = i + height(node.left) + 1; // finding hegiht of left side of tree 
+            j = j + height (node.right) + 1; // right side of tree
+        }
+        if(i >= j) { // returning whicheverside of tree is bigger
+            return i;
+        }
+          
+        else {
+            return j;
+        } 
+    }
+    
+    
+///////////////////// print ///////////////////// 
+    public void printBSTSet(){ 
+        
+        if (root==null){ 
+            System.out.println("The set is empty");
+        }
+        else { 
+            System.out.print("The set elements are: ");
+            printBSTSet(root);
+            System.out.print("\n");
+        }
+    }
+    
+    
+    private void printBSTSet(TNode t){ 
+        
+        if (t != null){
+            printBSTSet(t.left);
+            System.out.print(" "+t.element+", ");
+            printBSTSet(t.right);
+        }   
+    }
+    
+    
+    
+    public void printNonRec() { 
+        
+        if (root == null){ 
+            return;
+        }
+        
+        Stack <TNode> tree = new Stack <TNode>();
+        TNode temp = root;
+        
+        while (temp != null || tree.size() > 0){ 
+            while (temp != null){ 
+                tree.push(temp);
+                temp = temp.left;
+            }
+            
+            temp = tree.pop();
+            System.out.print(temp.element + ", ");
+            temp = temp.right;
+        }
+    }  
+}
+
+
+
+
+////////////////////////////////////////////
+////////////////////////////////////////////
+///////////////////////////////////////////
+
+
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package si4lab3;
+
+/**
+ *
+ * @author kamre
+ */
+public class TNode {
+    
+    int element; 
+    TNode left; 
+    TNode right;
+    TNode(int i, TNode l, TNode r){
+        element = i;
+        left = l;
+        right = r;
+    }
+    
+    
+    
+}
